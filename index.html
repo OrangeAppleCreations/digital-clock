@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Minimal Clock</title>
+    <title>Round Analog Clock</title>
     <style>
         body, html {
             margin: 0;
@@ -10,21 +10,41 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
         }
         #clock {
-            font-size: 16px;
-            color: #333;
-            padding: 5px;
+            width: 100px;
+            height: 100px;
         }
     </style>
 </head>
 <body>
-    <div id="clock"></div>
+    <svg id="clock" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="45" fill="none" stroke="#333" stroke-width="2"/>
+        <line id="hour" x1="50" y1="50" x2="50" y2="25" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+        <line id="minute" x1="50" y1="50" x2="50" y2="20" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+        <line id="second" x1="50" y1="50" x2="50" y2="15" stroke="#f00" stroke-width="1" stroke-linecap="round"/>
+        <circle cx="50" cy="50" r="3" fill="#333"/>
+    </svg>
     <script>
         function updateClock() {
-            document.getElementById('clock').innerHTML = new Date().toLocaleTimeString();
+            const now = new Date();
+            const hour = now.getHours() % 12;
+            const minute = now.getMinutes();
+            const second = now.getSeconds();
+
+            const hourHand = document.getElementById('hour');
+            const minuteHand = document.getElementById('minute');
+            const secondHand = document.getElementById('second');
+
+            const hourAngle = (hour + minute / 60) * 30;
+            const minuteAngle = (minute + second / 60) * 6;
+            const secondAngle = second * 6;
+
+            hourHand.setAttribute('transform', `rotate(${hourAngle}, 50, 50)`);
+            minuteHand.setAttribute('transform', `rotate(${minuteAngle}, 50, 50)`);
+            secondHand.setAttribute('transform', `rotate(${secondAngle}, 50, 50)`);
         }
+
         setInterval(updateClock, 1000);
         updateClock();
     </script>
