@@ -12,15 +12,12 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: transparent;
         }
         #quote-container {
             text-align: center;
             max-width: 600px;
             padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         #quote {
             font-size: 18px;
@@ -34,48 +31,42 @@
 </head>
 <body>
     <div id="quote-container">
-        <p id="quote">Laden van quote...</p>
+        <p id="quote"></p>
         <p id="author"></p>
     </div>
 
     <script>
-        const fallbackQuotes = [
+        const quotes = [
             { quote: "De enige manier om geweldig werk te doen, is door te houden van wat je doet.", author: "Steve Jobs" },
             { quote: "Succes is niet definitief, falen is niet fataal: het is de moed om door te gaan die telt.", author: "Winston Churchill" },
             { quote: "De toekomst behoort toe aan degenen die geloven in de schoonheid van hun dromen.", author: "Eleanor Roosevelt" },
             { quote: "Het leven is wat er met je gebeurt terwijl je andere plannen maakt.", author: "John Lennon" },
             { quote: "De weg naar succes en de weg naar falen zijn bijna exact hetzelfde.", author: "Colin R. Davis" },
             { quote: "Succes is het resultaat van perfectie, hard werken, leren van fouten, loyaliteit en volharding.", author: "Colin Powell" },
-            { quote: "De beste manier om de toekomst te voorspellen is door hem te creëren.", author: "Peter Drucker" }
+            { quote: "De beste manier om de toekomst te voorspellen is door hem te creëren.", author: "Peter Drucker" },
+            { quote: "Geluk is niet iets wat kant-en-klaar is. Het komt van je eigen acties.", author: "Dalai Lama" },
+            { quote: "De enige plek waar succes voor werk komt, is in het woordenboek.", author: "Vidal Sassoon" },
+            { quote: "Als je kunt dromen, kun je het doen.", author: "Walt Disney" },
+            { quote: "Ik heb niet gefaald. Ik heb alleen 10.000 manieren gevonden die niet werken.", author: "Thomas Edison" },
+            { quote: "Het geheim van vooruitgang is om te beginnen.", author: "Mark Twain" },
+            { quote: "De beste tijd om een boom te planten was 20 jaar geleden. De op een na beste tijd is nu.", author: "Chinees Spreekwoord" },
+            { quote: "Alles wat je je kunt voorstellen is echt.", author: "Pablo Picasso" },
+            { quote: "Hoe groter de moeilijkheid, hoe meer glorie in het overwinnen ervan.", author: "Epicurus" }
         ];
 
         function getDailyQuote() {
             const today = new Date();
             const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-            return fallbackQuotes[dayOfYear % fallbackQuotes.length];
+            return quotes[dayOfYear % quotes.length];
         }
 
-        function displayQuote(quoteData) {
+        function displayQuote() {
+            const quoteData = getDailyQuote();
             document.getElementById('quote').textContent = `"${quoteData.quote}"`;
             document.getElementById('author').textContent = `- ${quoteData.author}`;
         }
 
-        function fetchQuote() {
-            fetch('https://quotes.rest/qod?language=en')
-                .then(response => response.json())
-                .then(data => {
-                    const quoteData = data.contents.quotes[0];
-                    displayQuote({ quote: quoteData.quote, author: quoteData.author });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    const fallbackQuote = getDailyQuote();
-                    displayQuote(fallbackQuote);
-                });
-        }
-
-        // Probeer eerst een quote op te halen, gebruik anders de fallback
-        fetchQuote();
+        displayQuote();
     </script>
 </body>
 </html>
