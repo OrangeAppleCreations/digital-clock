@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quote van de Dag</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #quote-container {
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #quote {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        #author {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="quote-container">
+        <p id="quote">Laden van quote...</p>
+        <p id="author"></p>
+    </div>
+
+    <script>
+        function fetchQuote() {
+            fetch('https://quotes.rest/qod?language=en')
+                .then(response => response.json())
+                .then(data => {
+                    const quoteData = data.contents.quotes[0];
+                    document.getElementById('quote').textContent = `"${quoteData.quote}"`;
+                    document.getElementById('author').textContent = `- ${quoteData.author}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('quote').textContent = 'Kon geen quote laden. Probeer later opnieuw.';
+                });
+        }
+
+        // Haal de quote op wanneer de pagina laadt
+        fetchQuote();
+
+        // Haal elke dag een nieuwe quote op (86400000 ms = 24 uur)
+        setInterval(fetchQuote, 86400000);
+    </script>
+</body>
+</html>
