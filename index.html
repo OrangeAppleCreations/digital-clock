@@ -1,17 +1,34 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple Clock</title>
+    <title>Compact Clock</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        #clock {
+            font-size: 16px;
+            color: #333;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <div id="clock" style="font-size: 48px; text-align: center; margin-top: 100px;"></div>
+    <div id="clock"></div>
     <script>
         function updateClock() {
             document.getElementById('clock').innerHTML = new Date().toLocaleTimeString();
         }
         setInterval(updateClock, 1000);
-        updateClock(); // Initial call
+        updateClock();
     </script>
 </body>
 </html>
