@@ -39,25 +39,43 @@
     </div>
 
     <script>
+        const fallbackQuotes = [
+            { quote: "De enige manier om geweldig werk te doen, is door te houden van wat je doet.", author: "Steve Jobs" },
+            { quote: "Succes is niet definitief, falen is niet fataal: het is de moed om door te gaan die telt.", author: "Winston Churchill" },
+            { quote: "De toekomst behoort toe aan degenen die geloven in de schoonheid van hun dromen.", author: "Eleanor Roosevelt" },
+            { quote: "Het leven is wat er met je gebeurt terwijl je andere plannen maakt.", author: "John Lennon" },
+            { quote: "De weg naar succes en de weg naar falen zijn bijna exact hetzelfde.", author: "Colin R. Davis" },
+            { quote: "Succes is het resultaat van perfectie, hard werken, leren van fouten, loyaliteit en volharding.", author: "Colin Powell" },
+            { quote: "De beste manier om de toekomst te voorspellen is door hem te creëren.", author: "Peter Drucker" }
+        ];
+
+        function getDailyQuote() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+            return fallbackQuotes[dayOfYear % fallbackQuotes.length];
+        }
+
+        function displayQuote(quoteData) {
+            document.getElementById('quote').textContent = `"${quoteData.quote}"`;
+            document.getElementById('author').textContent = `- ${quoteData.author}`;
+        }
+
         function fetchQuote() {
             fetch('https://quotes.rest/qod?language=en')
                 .then(response => response.json())
                 .then(data => {
                     const quoteData = data.contents.quotes[0];
-                    document.getElementById('quote').textContent = `"${quoteData.quote}"`;
-                    document.getElementById('author').textContent = `- ${quoteData.author}`;
+                    displayQuote({ quote: quoteData.quote, author: quoteData.author });
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    document.getElementById('quote').textContent = 'Kon geen quote laden. Probeer later opnieuw.';
+                    const fallbackQuote = getDailyQuote();
+                    displayQuote(fallbackQuote);
                 });
         }
 
-        // Haal de quote op wanneer de pagina laadt
+        // Probeer eerst een quote op te halen, gebruik anders de fallback
         fetchQuote();
-
-        // Haal elke dag een nieuwe quote op (86400000 ms = 24 uur)
-        setInterval(fetchQuote, 86400000);
     </script>
 </body>
 </html>
